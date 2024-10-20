@@ -49,7 +49,7 @@ func _on_install_button_pressed() -> void:
 	var files = [] # Files to be copied
 	var chmod = [] # Files to be chmod +x'd
 	if OS.get_name() == "macOS":
-		files = ["BepInEx", "doorstop_config.ini", "libdoorstop.dylib", "run_bepinex.sh", "ULTRAKILL.app", "winhttp.dll"]
+		files = ["BepInEx", "doorstop_config.ini", "libdoorstop.dylib", "run_bepinex.sh", "ULTRAKILL.app", "winhttp.dll", "liar"]
 		chmod = ["run_bepinex.sh", "ULTRAKILL.app"]
 	elif OS.get_name() == "Linux":
 		files = ["BepInEx", "doorstop_config.ini", "liar", "libdoorstop.so", "LinuxPlayer_s.debug", "run_bepinex.sh", "ULTRAKILL_Data", "ULTRAKILL.x86_64", "UnityPlayer_s.debug", "UnityPlayer.so"]
@@ -58,6 +58,7 @@ func _on_install_button_pressed() -> void:
 	for file in files:
 		var output = []
 		OS.execute("cp", ["-r", os_folder + "/" + file, ultrakill_path], output, true)
+	symlink.CreateSymlinks(str(ultrakill_path), OS.get_name())
 	#for file in chmod:
 		#var output = []
 		## file not found??? how???
@@ -87,6 +88,31 @@ func _on_acf_pressed() -> void:
 	#var symlink_script = load("res://Symlink.cs")
 	#var symlink = symlink_script.new()
 	acf_copy.CopyACF()
-	symlink.CreateSymlinks(str(ultrakill_path))
 	steam_warning.visible = false
 	pass
+
+func _on_launch_button_pressed() -> void:
+	var liar = false
+	var dxvk = true
+	var modded = true
+	var opengl = false
+	var renderer_flag = "-force-d3d11"
+	var dxvk_dll = "b,n"
+	var modded_dll = "b,n"
+	if modded:
+		modded_dll = "n,b"
+	if dxvk:
+		dxvk_dll = "n,b"
+	if opengl == true:
+		dxvk_dll = "b,n"
+		renderer_flag = "-force-glcore"
+	if liar == false:
+		var output = []
+		OS.set_environment("WINEDLLOVERRIDES", "d3d11=" + dxvk_dll + ";winhttp=" + modded_dll)
+		OS.execute("/usr/local/bin/wine", [ultrakill_path + "/ULTRAKILL.exe", renderer_flag], output, true)
+		print(output)
+		print(ultrakill_path + "/ULTRAKILL.exe")
+		pass # Replace with function body.
+	if liar == true:
+		# put native launch stuff here
+		pass

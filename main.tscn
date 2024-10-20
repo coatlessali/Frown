@@ -33,7 +33,7 @@ text = "Select \"ULTRAKILL\" Path"
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 position = Vector2i(0, 36)
-size = Vector2i(499, 147)
+size = Vector2i(499, 175)
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
@@ -106,5 +106,6 @@ script = ExtResource("4_r0o8v")
 
 [connection signal="pressed" from="PathButton" to="." method="_on_path_button_pressed"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]
 [connection signal="pressed" from="InstallButton" to="." method="_on_install_button_pressed"]
 [connection signal="pressed" from="ACF" to="." method="_on_acf_pressed"]
