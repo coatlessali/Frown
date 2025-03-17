@@ -1,0 +1,84 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddo553r4bg12y"]
+
+[ext_resource type="Script" path="res://Frown.cs" id="1_o15y0"]
+[ext_resource type="Script" path="res://Progress.cs" id="2_1xdwo"]
+[ext_resource type="Script" path="res://UkPath.cs" id="4_wij6f"]
+[ext_resource type="Script" path="res://BaseZip.cs" id="4_y0p7p"]
+
+[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_api", "_ukPath", "_baseZip")]
+script = ExtResource("1_o15y0")
+_progress = NodePath("Progress")
+_install = NodePath("Install")
+_uninstall = NodePath("Uninstall")
+_api = NodePath("APIStatus")
+_ukPath = NodePath("ukPath")
+_baseZip = NodePath("baseZip")
+
+[node name="Progress" type="Label" parent="."]
+offset_left = 704.0
+offset_top = 624.0
+offset_right = 1147.0
+offset_bottom = 647.0
+text = "Default Text If You See This Something Is Probably Wrong"
+horizontal_alignment = 2
+script = ExtResource("2_1xdwo")
+
+[node name="Install" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 288.0
+offset_right = 640.0
+offset_bottom = 319.0
+text = "Install..."
+
+[node name="Uninstall" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 320.0
+offset_right = 640.0
+offset_bottom = 351.0
+text = "Uninstall..."
+
+[node name="FrownStatus" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="APIStatus" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="ModStatus" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 320)
+
+[node name="UkPathButton" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 257.0
+offset_right = 640.0
+offset_bottom = 288.0
+text = "Select path..."
+
+[node name="ukPath" type="FileDialog" parent="." node_paths=PackedStringArray("_ukb")]
+title = "Open a Directory"
+size = Vector2i(640, 480)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+show_hidden_files = true
+script = ExtResource("4_wij6f")
+_ukb = NodePath("../UkPathButton")
+
+[node name="baseZip" type="FileDialog" parent="." node_paths=PackedStringArray("_ins")]
+title = "Open a File"
+size = Vector2i(640, 480)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+show_hidden_files = true
+script = ExtResource("4_y0p7p")
+_ins = NodePath("../Install")
+
+[connection signal="pressed" from="UkPathButton" to="ukPath" method="_on_uk_path_button_pressed"]
+[connection signal="dir_selected" from="ukPath" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="file_selected" from="baseZip" to="." method="_on_base_zip_file_selected"]
