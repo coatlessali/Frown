@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://ddo553r4bg12y"]
 
-[ext_resource type="Script" path="res://Frown.cs" id="1_o15y0"]
-[ext_resource type="Script" path="res://Progress.cs" id="2_1xdwo"]
-[ext_resource type="Script" path="res://UkPath.cs" id="4_wij6f"]
-[ext_resource type="Script" path="res://BaseZip.cs" id="4_y0p7p"]
-[ext_resource type="Script" path="res://Acf.cs" id="5_lg015"]
+[ext_resource type="Script" uid="uid://pqhtgys3qw8x" path="res://Frown.cs" id="1_o15y0"]
+[ext_resource type="Script" uid="uid://chf0svbevv75y" path="res://Progress.cs" id="2_1xdwo"]
+[ext_resource type="Script" uid="uid://ctpavcg1gvmmm" path="res://UkPath.cs" id="4_wij6f"]
+[ext_resource type="Script" uid="uid://d27saoc78nxu5" path="res://BaseZip.cs" id="4_y0p7p"]
+[ext_resource type="Script" uid="uid://cn1rauoq1sfbg" path="res://Acf.cs" id="5_lg015"]
 
 [node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_api", "_ukPath", "_baseZip")]
 script = ExtResource("1_o15y0")
