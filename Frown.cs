@@ -85,49 +85,59 @@ public partial class Frown : Node2D
 	
 	public void Restore()
 	{
-		// if linux
-		string VersionPath = Path.Combine(ukPath, "version.txt");
-		string ukExe = Path.Combine(ukPath, "ULTRAKILL.x86_64");
-		string pluginsPath = Path.Combine(ukPath, "ULTRAKILL_Data", "Plugins", "x86_64");
-		string UnityPlayer = Path.Combine(ukPath, "UnityPlayer.so");
-		string Managed = Path.Combine(ukPath, "ULTRAKILL_Data", "Managed");
-		string MonoBleedingEdge = Path.Combine(ukPath, "ULTRAKILL_Data", "MonoBleedingEdge");
-		if (!Directory.Exists(backup))
+		if (OS.GetName() == "Linux")
 		{
-			GD.Print("backup doesn't exist");
-			return;
-		}
-		if (!File.Exists(ukExe))
-		{
-			GD.Print("FROWN not installed");
-			return;
-		}
-		
-		Directory.Delete(Managed, true);
-		_progress.Text = "Deleted Managed...";
-		Directory.Delete(MonoBleedingEdge, true);
-		_progress.Text = "Deleted MonoBleedingEdge...";
-		
-		string[] files =  { VersionPath, ukExe, 
-							UnityPlayer, "discord_game_sdk.bundle", 
-							"discord_game_sdk.dll.lib", "discord_game_sdk.dylib", 
-							"discord_game_sdk.so", "steam_api64.dylib", 
-							"steam_api64.so" };
-		foreach (string file in files){
-			try{
-				File.Delete(file);
-				_progress.Text = "Deleted " + file;
+			string VersionPath = Path.Combine(ukPath, "version.txt");
+			string ukExe = Path.Combine(ukPath, "ULTRAKILL.x86_64");
+			string pluginsPath = Path.Combine(ukPath, "ULTRAKILL_Data", "Plugins", "x86_64");
+			string UnityPlayer = Path.Combine(ukPath, "UnityPlayer.so");
+			string Managed = Path.Combine(ukPath, "ULTRAKILL_Data", "Managed");
+			string MonoBleedingEdge = Path.Combine(ukPath, "ULTRAKILL_Data", "MonoBleedingEdge");
+			if (!Directory.Exists(backup))
+			{
+				GD.Print("backup doesn't exist");
+				return;
 			}
-			catch(Exception e){
-				_progress.Text = file + " does not exist, skipping";
+			if (!File.Exists(ukExe))
+			{
+				GD.Print("FROWN not installed");
+				return;
 			}
+		
+			Directory.Delete(Managed, true);
+			_progress.Text = "Deleted Managed...";
+			Directory.Delete(MonoBleedingEdge, true);
+			_progress.Text = "Deleted MonoBleedingEdge...";
 			
-		}
-		Directory.CreateDirectory(Managed);
-		_progress.Text = "Recreated Managed...";
-		CopyFilesRecursively(backup, Managed);
-		_progress.Text = "Restored Managed...";
+			string[] files =  { VersionPath, ukExe, 
+								UnityPlayer, "discord_game_sdk.bundle", 
+								"discord_game_sdk.dll.lib", "discord_game_sdk.dylib", 
+								"discord_game_sdk.so", "steam_api64.dylib", 
+								"steam_api64.so" };
+			foreach (string file in files){
+				try{
+					File.Delete(file);
+					_progress.Text = "Deleted " + file;
+				}
+				catch(Exception e){
+					_progress.Text = file + " does not exist, skipping";
+				}
+			
+			}
+			Directory.CreateDirectory(Managed);
+			_progress.Text = "Recreated Managed...";
+			CopyFilesRecursively(backup, Managed);
+			_progress.Text = "Restored Managed...";
+		}	
 		
+		string ukApp = Path.Combine(ukPath, "ULTRAKILL.app");
+		try{
+			Directory.Delete(ukApp, true);
+			_progress.Text = "Deleted ULTRAKILL.app";
+		}
+		catch (Exception e){
+			GD.Print(e.ToString());
+		}
 	}
 	
 	public override void _Ready()
@@ -193,11 +203,49 @@ public partial class Frown : Node2D
 			GD.Print(verStr.Length);
 			GD.Print("ukVersion " + ukVersion);
 			GD.Print(ukVersion.Length);
-			return;
+			// return;
 		}
-		// if linux
 		ZipFile.ExtractToDirectory(baseZip, ukPath, true);
-		_progress.Text = "Installed FROWN";
+		_progress.Text = "Installed FROWN for Linux";
+		
+		if (OS.GetName() == "macOS")
+		{
+			string ukApp = Path.GetFullPath(Path.Combine(ukPath, "ULTRAKILL.app"));
+			string saves = Path.GetFullPath(Path.Combine(ukPath, "Saves"));
+			string preferences = Path.GetFullPath(Path.Combine(ukPath, "Preferences"));
+			string cybergrind = Path.GetFullPath(Path.Combine(ukPath, "Cybergrind"));
+			string savesLink = Path.GetFullPath(Path.Combine(ukApp, "Saves"));
+			string preferencesLink = Path.GetFullPath(Path.Combine(ukApp, "Preferences"));
+			string cybergrindLink = Path.GetFullPath(Path.Combine(ukApp, "CyberGrind"));
+		
+			if (!Directory.Exists(ukApp))
+			{
+				GD.Print("ukApp not found");
+				_progress.Text = "couldn't find ultrakill.app...";
+				return;
+			}
+			
+			try{
+				File.CreateSymbolicLink(savesLink, saves);
+				_progress.Text = "Linked Saves...";
+				File.CreateSymbolicLink(preferencesLink, preferences);
+				_progress.Text = "Linked Preferences...";
+				File.CreateSymbolicLink(cybergrindLink, cybergrind);
+				_progress.Text = "Linked CyberGrind...";
+			}
+			catch (Exception e)
+			{
+				GD.Print(e.ToString());
+			}
+			string ukData = Path.Combine(ukPath, "ULTRAKILL_Data");
+			string ukAppData = Path.Combine(ukApp, "Contents", "Resources", "Data");
+			CopyFilesRecursively(ukData, ukAppData);
+			_progress.Text = "Copied ULTRAKILL data to ULTRAKILL.app...";
+			string oldManaged = Path.Combine(ukAppData, "Managed");
+			string newManaged = Path.Combine(ukAppData, "NewManaged");
+			CopyFilesRecursively(newManaged, oldManaged);
+			_progress.Text = "Finalized installation of FROWN for macOS.";
+		}
 	}
 
 	public void GetUKPath(string dir)

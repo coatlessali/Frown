@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddo553r4bg12y"]
+[gd_scene load_steps=6 format=3 uid="uid://ddo553r4bg12y"]
 
 [ext_resource type="Script" path="res://Frown.cs" id="1_o15y0"]
 [ext_resource type="Script" path="res://Progress.cs" id="2_1xdwo"]
 [ext_resource type="Script" path="res://UkPath.cs" id="4_wij6f"]
 [ext_resource type="Script" path="res://BaseZip.cs" id="4_y0p7p"]
+[ext_resource type="Script" path="res://Acf.cs" id="5_lg015"]
 
 [node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_api", "_ukPath", "_baseZip")]
 script = ExtResource("1_o15y0")
@@ -23,11 +24,18 @@ text = "Default Text If You See This Something Is Probably Wrong"
 horizontal_alignment = 2
 script = ExtResource("2_1xdwo")
 
+[node name="UkPathButton" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 257.0
+offset_right = 640.0
+offset_bottom = 289.0
+text = "Select path..."
+
 [node name="Install" type="Button" parent="."]
 offset_left = 512.0
-offset_top = 288.0
+offset_top = 289.0
 offset_right = 640.0
-offset_bottom = 319.0
+offset_bottom = 320.0
 text = "Install..."
 
 [node name="Uninstall" type="Button" parent="."]
@@ -36,6 +44,21 @@ offset_top = 320.0
 offset_right = 640.0
 offset_bottom = 351.0
 text = "Uninstall..."
+
+[node name="Command" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 351.0
+offset_right = 640.0
+offset_bottom = 382.0
+text = "Command..."
+
+[node name="ACF" type="Button" parent="."]
+offset_left = 512.0
+offset_top = 382.0
+offset_right = 640.0
+offset_bottom = 413.0
+text = "Create ACF..."
+script = ExtResource("5_lg015")
 
 [node name="FrownStatus" type="Label" parent="."]
 offset_right = 40.0
@@ -51,13 +74,6 @@ offset_bottom = 23.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 320)
-
-[node name="UkPathButton" type="Button" parent="."]
-offset_left = 512.0
-offset_top = 257.0
-offset_right = 640.0
-offset_bottom = 288.0
-text = "Select path..."
 
 [node name="ukPath" type="FileDialog" parent="." node_paths=PackedStringArray("_ukb")]
 title = "Open a Directory"
@@ -80,5 +96,6 @@ script = ExtResource("4_y0p7p")
 _ins = NodePath("../Install")
 
 [connection signal="pressed" from="UkPathButton" to="ukPath" method="_on_uk_path_button_pressed"]
+[connection signal="pressed" from="ACF" to="ACF" method="_on_pressed"]
 [connection signal="dir_selected" from="ukPath" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="file_selected" from="baseZip" to="." method="_on_base_zip_file_selected"]
