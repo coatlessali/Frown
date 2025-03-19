@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://pqhtgys3qw8x" path="res://Frown.cs" id="1_o15y0"]
 [ext_resource type="Script" uid="uid://chf0svbevv75y" path="res://Progress.cs" id="2_1xdwo"]
-[ext_resource type="FontFile" uid="uid://bgryw4peolpym" path="res://fonts/wine-tahoma.ttf" id="2_l48gv"]
+[ext_resource type="Script" uid="uid://cjetgb3v0jj5o" path="res://button_desc.gd" id="2_gd0jp"]
 [ext_resource type="Theme" uid="uid://22q8psrdhqtp" path="res://menu.theme" id="4_ecwwl"]
 [ext_resource type="Script" uid="uid://ctpavcg1gvmmm" path="res://UkPath.cs" id="4_wij6f"]
 [ext_resource type="Script" uid="uid://d27saoc78nxu5" path="res://BaseZip.cs" id="4_y0p7p"]
@@ -17,6 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://nt1r2d2kdmo" path="res://smile-middle.png" id="14_gd0jp"]
 [ext_resource type="Texture2D" uid="uid://d3kufamybw8l8" path="res://smile-right.png" id="15_4ndjb"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecwwl"]
+bg_color = Color(0.0997504, 0.0997504, 0.0997503, 1)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g7jxm"]
 texture = ExtResource("8_iqepy")
 
@@ -29,25 +32,29 @@ texture = ExtResource("8_iqepy")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gd0jp"]
 texture = ExtResource("10_dwrpx")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecwwl"]
-bg_color = Color(0.0997504, 0.0997504, 0.0997503, 1)
-
-[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_api", "_ukPath", "_baseZip")]
+[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_ukPath", "_baseZip")]
 script = ExtResource("1_o15y0")
 _progress = NodePath("Progress")
 _install = NodePath("Buttons/Install")
 _uninstall = NodePath("Buttons/Uninstall")
-_api = NodePath("")
 _ukPath = NodePath("ukPath")
 _baseZip = NodePath("baseZip")
+
+[node name="ButtonDesc" type="RichTextLabel" parent="."]
+offset_left = 256.0
+offset_top = 128.0
+offset_right = 512.0
+offset_bottom = 315.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ecwwl")
+script = ExtResource("2_gd0jp")
 
 [node name="Buttons" type="Node" parent="."]
 
 [node name="LaunchCommand" type="Button" parent="Buttons"]
-offset_left = 417.0
-offset_top = 194.0
-offset_right = 543.0
-offset_bottom = 222.0
+offset_left = 514.0
+offset_top = 223.0
+offset_right = 640.0
+offset_bottom = 251.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Copy Command..."
@@ -60,10 +67,10 @@ scale = Vector2(128, 30)
 texture = ExtResource("5_3ls4m")
 
 [node name="UkPathButton" type="Button" parent="Buttons"]
-offset_left = 417.0
-offset_top = 66.0
-offset_right = 543.0
-offset_bottom = 94.0
+offset_left = 514.0
+offset_top = 129.0
+offset_right = 640.0
+offset_bottom = 157.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Select path..."
@@ -76,10 +83,10 @@ scale = Vector2(128, 30)
 texture = ExtResource("5_3ls4m")
 
 [node name="Install" type="Button" parent="Buttons"]
-offset_left = 417.0
-offset_top = 98.0
-offset_right = 543.0
-offset_bottom = 125.0
+offset_left = 514.0
+offset_top = 161.0
+offset_right = 640.0
+offset_bottom = 188.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Install..."
@@ -92,10 +99,10 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="Uninstall" type="Button" parent="Buttons"]
-offset_left = 417.0
-offset_top = 130.0
-offset_right = 543.0
-offset_bottom = 157.0
+offset_left = 514.0
+offset_top = 192.0
+offset_right = 640.0
+offset_bottom = 219.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Uninstall..."
@@ -108,10 +115,10 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="ACF" type="Button" parent="Buttons" node_paths=PackedStringArray("_progress")]
-offset_left = 417.0
-offset_top = 162.0
-offset_right = 543.0
-offset_bottom = 189.0
+offset_left = 514.0
+offset_top = 255.0
+offset_right = 640.0
+offset_bottom = 282.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Create ACF..."
@@ -126,10 +133,10 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="Launch" type="Button" parent="Buttons"]
-offset_left = 417.0
-offset_top = 226.0
-offset_right = 543.0
-offset_bottom = 254.0
+offset_left = 514.0
+offset_top = 286.0
+offset_right = 640.0
+offset_bottom = 314.0
 theme = ExtResource("4_ecwwl")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
@@ -149,13 +156,14 @@ texture = ExtResource("5_3ls4m")
 [node name="Switches" type="Node" parent="."]
 
 [node name="Mods" type="CheckButton" parent="Switches"]
-offset_left = 33.0
-offset_top = 66.0
-offset_right = 159.0
-offset_bottom = 94.0
+offset_left = 128.0
+offset_top = 129.0
+offset_right = 254.0
+offset_bottom = 157.0
 theme = ExtResource("4_ecwwl")
 text = "Mods"
 alignment = 1
+metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/Mods"]
 z_index = -1
@@ -164,13 +172,14 @@ scale = Vector2(128, 30)
 texture = ExtResource("5_3ls4m")
 
 [node name="API" type="CheckButton" parent="Switches"]
-offset_left = 33.0
-offset_top = 97.0
-offset_right = 159.0
-offset_bottom = 124.0
+offset_left = 128.0
+offset_top = 161.0
+offset_right = 254.0
+offset_bottom = 188.0
 theme = ExtResource("4_ecwwl")
 text = "Vulkan"
 alignment = 1
+metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/API"]
 z_index = -1
@@ -179,13 +188,14 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="Wayland" type="CheckButton" parent="Switches"]
-offset_left = 33.0
-offset_top = 130.0
-offset_right = 159.0
-offset_bottom = 157.0
+offset_left = 128.0
+offset_top = 193.0
+offset_right = 254.0
+offset_bottom = 220.0
 theme = ExtResource("4_ecwwl")
 text = "Wayland"
 alignment = 1
+metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/Wayland"]
 z_index = -1
@@ -194,13 +204,14 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="CheckButton" type="CheckButton" parent="Switches"]
-offset_left = 33.0
-offset_top = 162.0
-offset_right = 159.0
-offset_bottom = 189.0
+offset_left = 128.0
+offset_top = 224.0
+offset_right = 254.0
+offset_bottom = 251.0
 theme = ExtResource("4_ecwwl")
 text = "Mangohud"
 alignment = 1
+metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/CheckButton"]
 z_index = -1
@@ -223,7 +234,8 @@ script = ExtResource("2_1xdwo")
 
 [node name="ukPath" type="FileDialog" parent="." node_paths=PackedStringArray("_ukb")]
 title = "Open a Directory"
-size = Vector2i(899, 480)
+position = Vector2i(8, 32)
+size = Vector2i(752, 394)
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
@@ -233,7 +245,8 @@ _ukb = NodePath("../Buttons/UkPathButton")
 
 [node name="baseZip" type="FileDialog" parent="." node_paths=PackedStringArray("_ins")]
 title = "Open a File"
-size = Vector2i(871, 480)
+position = Vector2i(8, 32)
+size = Vector2i(750, 394)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
@@ -242,10 +255,10 @@ script = ExtResource("4_y0p7p")
 _ins = NodePath("../Buttons/Install")
 
 [node name="Title" type="Label" parent="."]
-offset_left = 160.0
-offset_top = 16.0
-offset_right = 416.0
-offset_bottom = 48.0
+offset_left = 256.0
+offset_top = 48.0
+offset_right = 512.0
+offset_bottom = 80.0
 theme_override_colors/font_color = Color(1, 0.25098, 0.25098, 1)
 theme_override_fonts/font = ExtResource("8_dwrpx")
 theme_override_font_sizes/font_size = 32
@@ -265,17 +278,6 @@ text = "A SmileOS 2.0 compatibility layer for UNIX-like operating systems."
 horizontal_alignment = 1
 script = ExtResource("9_g7jxm")
 
-[node name="ButtonDesc" type="RichTextLabel" parent="."]
-offset_left = 160.0
-offset_top = 64.0
-offset_right = 416.0
-offset_bottom = 256.0
-theme_override_fonts/normal_font = ExtResource("2_l48gv")
-theme_override_fonts/italics_font = ExtResource("2_l48gv")
-theme_override_fonts/bold_italics_font = ExtResource("2_l48gv")
-theme_override_fonts/bold_font = ExtResource("2_l48gv")
-theme_override_styles/normal = SubResource("StyleBoxFlat_ecwwl")
-
 [node name="Window" type="Node" parent="."]
 
 [node name="Left" type="Sprite2D" parent="Window"]
@@ -284,16 +286,26 @@ scale = Vector2(1.05, 1)
 texture = ExtResource("13_oxnod")
 
 [node name="Middle" type="Sprite2D" parent="Window"]
-position = Vector2(274.125, 8)
-scale = Vector2(34.5167, 1)
+position = Vector2(371.625, 8)
+scale = Vector2(47.5167, 1)
 texture = ExtResource("14_gd0jp")
 
 [node name="Right" type="Sprite2D" parent="Window"]
-position = Vector2(554.5, 8)
-scale = Vector2(1, 1)
+position = Vector2(745.25, 8)
+scale = Vector2(1.05814, 1)
 texture = ExtResource("15_4ndjb")
 
+[connection signal="mouse_entered" from="Buttons/LaunchCommand" to="ButtonDesc" method="_on_launch_command_mouse_entered"]
+[connection signal="mouse_entered" from="Buttons/UkPathButton" to="ButtonDesc" method="_on_uk_path_button_mouse_entered"]
 [connection signal="pressed" from="Buttons/UkPathButton" to="ukPath" method="_on_uk_path_button_pressed"]
+[connection signal="mouse_entered" from="Buttons/Install" to="ButtonDesc" method="_on_install_mouse_entered"]
+[connection signal="mouse_entered" from="Buttons/Uninstall" to="ButtonDesc" method="_on_uninstall_mouse_entered"]
+[connection signal="mouse_entered" from="Buttons/ACF" to="ButtonDesc" method="_on_acf_mouse_entered"]
 [connection signal="pressed" from="Buttons/ACF" to="Buttons/ACF" method="_on_pressed"]
+[connection signal="mouse_entered" from="Buttons/Launch" to="ButtonDesc" method="_on_launch_mouse_entered"]
+[connection signal="mouse_entered" from="Switches/Mods" to="ButtonDesc" method="_on_mods_mouse_entered"]
+[connection signal="mouse_entered" from="Switches/API" to="ButtonDesc" method="_on_api_mouse_entered"]
+[connection signal="mouse_entered" from="Switches/Wayland" to="ButtonDesc" method="_on_wayland_mouse_entered"]
+[connection signal="mouse_entered" from="Switches/CheckButton" to="ButtonDesc" method="_on_check_button_mouse_entered"]
 [connection signal="dir_selected" from="ukPath" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="file_selected" from="baseZip" to="." method="_on_base_zip_file_selected"]
