@@ -17,13 +17,23 @@ config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=576
+window/size/viewport_height=324
 window/size/resizable=false
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
 
 [dotnet]
 
 project/assembly_name="FROWN"
 
+[gui]
+
+theme/custom_font="uid://jsnp4a1vnwe6"
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.156863, 0.156863, 0.156863, 1)

@@ -67,13 +67,16 @@ public partial class Frown : Node2D
 		if (!Directory.Exists(backup))
 		{
 			Directory.CreateDirectory(backup);
-			_progress.Text = "Created backup directory.";
+			// _progress.Text = "Created backup directory.";
+			_progress.Set("Buffer", "Created backup directory.");
 			CopyFilesRecursively(Managed, backup);
-			_progress.Text = "Created backup.";
+			// _progress.Text = "Created backup.";
+			_progress.Set("Buffer", "Created backup.");
 		}
 		else
 		{
-			_progress.Text = "Skipped backup creation.";
+			// _progress.Text = "Skipped backup creation.";
+			_progress.Set("Buffer", "Skipped backup creation.");
 		}
 	}
 	
@@ -105,9 +108,11 @@ public partial class Frown : Node2D
 			}
 		
 			Directory.Delete(Managed, true);
-			_progress.Text = "Deleted Managed...";
+			// _progress.Text = "Deleted Managed...";
+			_progress.Set("Buffer", "Deleted Managed...");
 			Directory.Delete(MonoBleedingEdge, true);
-			_progress.Text = "Deleted MonoBleedingEdge...";
+			// _progress.Text = "Deleted MonoBleedingEdge...";
+			_progress.Set("Buffer", "Deleted MonoBleedingEdge...");
 			
 			string[] files =  { VersionPath, ukExe, 
 								UnityPlayer, "discord_game_sdk.bundle", 
@@ -117,23 +122,29 @@ public partial class Frown : Node2D
 			foreach (string file in files){
 				try{
 					File.Delete(file);
-					_progress.Text = "Deleted " + file;
+					// _progress.Text = "Deleted " + file;
+					_progress.Set("Buffer", "Deleted " + file + "...");
 				}
 				catch(Exception e){
-					_progress.Text = file + " does not exist, skipping";
+					// _progress.Text = file + " does not exist, skipping";
+					_progress.Set("Buffer", file + " does not exist, skipping...");
 				}
 			
 			}
 			Directory.CreateDirectory(Managed);
-			_progress.Text = "Recreated Managed...";
+			// _progress.Text = "Recreated Managed...";
+			_progress.Set("Buffer", "Recreated Managed...");
 			CopyFilesRecursively(backup, Managed);
-			_progress.Text = "Restored Managed...";
+			// _progress.Text = "Restored Managed...";
+			_progress.Set("Buffer", "Restored Managed...");
 		}	
-		
+		if (OS.GetName() != "macOS")
+		  return;
 		string ukApp = Path.Combine(ukPath, "ULTRAKILL.app");
 		try{
 			Directory.Delete(ukApp, true);
-			_progress.Text = "Deleted ULTRAKILL.app";
+			// _progress.Text = "Deleted ULTRAKILL.app";
+			_progress.Set("Buffer", "Deleted ULTRAKILL.app...");
 		}
 		catch (Exception e){
 			GD.Print(e.ToString());
@@ -153,7 +164,8 @@ public partial class Frown : Node2D
 		if(!File.Exists(frownConfig)){
 			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0";
 			File.WriteAllText(frownConfig, defaultConfig);
-			_progress.Text = "Created frown.ini";
+			// _progress.Text = "Created frown.ini";
+			_progress.Set("Buffer", "Created frown.ini...");
 			_ukPath.Show();
 		}
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
@@ -162,10 +174,12 @@ public partial class Frown : Node2D
 		backend = byte.Parse(data["main"]["renderer"]);
 		modStatus = bool.Parse(data["main"]["bepinex"]);
 		
-		_progress.Text = "Loaded frown.ini";
+		// _progress.Text = "Loaded frown.ini";
+		_progress.Set("Buffer", "Loaded frown.ini...");
 		
 		GetUKInfo();
-		_progress.Text = "Parsed ULTRAKILL install info";
+		// _progress.Text = "Parsed ULTRAKILL install info";
+		_progress.Set("Buffer", "Parsed ULTRAKILL install info...");
 		
 		GD.Print(ukPath);
 		GD.Print(wayland);
@@ -206,7 +220,8 @@ public partial class Frown : Node2D
 			// return;
 		}
 		ZipFile.ExtractToDirectory(baseZip, ukPath, true);
-		_progress.Text = "Installed FROWN for Linux";
+		// _progress.Text = "Installed FROWN for Linux";
+		_progress.Set("Buffer", "Installed FROWN for Linux.");
 		
 		if (OS.GetName() == "macOS")
 		{
@@ -221,17 +236,21 @@ public partial class Frown : Node2D
 			if (!Directory.Exists(ukApp))
 			{
 				GD.Print("ukApp not found");
-				_progress.Text = "couldn't find ultrakill.app...";
+				// _progress.Text = "couldn't find ultrakill.app...";
+				_progress.Set("Buffer", "Couldn't find ULTRAKILL.app...");
 				return;
 			}
 			
 			try{
 				File.CreateSymbolicLink(savesLink, saves);
-				_progress.Text = "Linked Saves...";
+				// _progress.Text = "Linked Saves...";
+				_progress.Set("Buffer", "Linked Saves...");
 				File.CreateSymbolicLink(preferencesLink, preferences);
-				_progress.Text = "Linked Preferences...";
+				// _progress.Text = "Linked Preferences...";
+				_progress.Set("Buffer", "Linked Preferences...");
 				File.CreateSymbolicLink(cybergrindLink, cybergrind);
-				_progress.Text = "Linked CyberGrind...";
+				// _progress.Text = "Linked CyberGrind...";
+				_progress.Set("Buffer", "Linked CyberGrind...");
 			}
 			catch (Exception e)
 			{
@@ -240,11 +259,13 @@ public partial class Frown : Node2D
 			string ukData = Path.Combine(ukPath, "ULTRAKILL_Data");
 			string ukAppData = Path.Combine(ukApp, "Contents", "Resources", "Data");
 			CopyFilesRecursively(ukData, ukAppData);
-			_progress.Text = "Copied ULTRAKILL data to ULTRAKILL.app...";
+			// _progress.Text = "Copied ULTRAKILL data to ULTRAKILL.app...";
+			_progress.Set("Buffer", "Copied ULTRAKILL data to ULTRAKILL.app...");
 			string oldManaged = Path.Combine(ukAppData, "Managed");
 			string newManaged = Path.Combine(ukAppData, "NewManaged");
 			CopyFilesRecursively(newManaged, oldManaged);
-			_progress.Text = "Finalized installation of FROWN for macOS.";
+			// _progress.Text = "Finalized installation of FROWN for macOS.";
+			_progress.Set("Buffer", "Finalized installation of FROWN for macOS.");
 		}
 	}
 
@@ -255,7 +276,8 @@ public partial class Frown : Node2D
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
 		data["main"]["ukPath"] = Path.GetFullPath(dir);
 		new FileIniDataParser().WriteFile(frownConfig, data);
-		_progress.Text = "Saved changes.";
+		// _progress.Text = "Saved changes.";
+		_progress.Set("Buffer", "Saved changes.");
 		
 		Backup();
 	}
