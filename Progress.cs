@@ -1,9 +1,9 @@
 using Godot;
 using System;
 
-public partial class Progress : Label
+public partial class Progress : RichTextLabel
 {
-	int numLines = 0;
+	/*int numLines = 0;
 	// static int lineLimit = 10;
 	string Buffer = "";
 	string[] Buffers = {"", "", "", "", "", "", "", "", ""};
@@ -17,19 +17,21 @@ public partial class Progress : Label
 	{
 		if (Buffer != "")
 		{
-			for (int i = 0; i < Buffers.Length-1; i++){
+		for (int i = 0; i < Buffers.Length-1; i++){
 				int l = Buffers.Length;
 				Buffers[i] = Buffers[i+1];
 			}
 			Buffers[Buffers.Length-1] = Buffer;
 			
-			Text = "";
+			// Text = "";
 			foreach (string s in Buffers)
 			{
 				Text += s + "\n";
 			}
 			
+			Text += Buffer + "\n";
 			Buffer = "";
+			
 		}
-	}
+	}*/
 }
