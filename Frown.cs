@@ -72,7 +72,7 @@ public partial class Frown : Node2D
 		}
 		ukVersion = System.Text.Encoding.Default.GetString(levelZeroVer).Trim();
 		ukVersion = Regex.Replace(ukVersion, @"[^\u0020-\u007E]", string.Empty);
-		GD.Print(ukVersion);
+		// GD.Print(ukVersion);
 	}
 	
 	public void GetAPI()
@@ -91,15 +91,15 @@ public partial class Frown : Node2D
 		if (!Directory.Exists(backup))
 		{
 			Directory.CreateDirectory(backup);
-			_progress.Text += "Created backup directory.\n";
+			_progress.Text += "[I] Created backup directory.\n";
 			// _progress.Set("Buffer", "Created backup directory.");
 			CopyFilesRecursively(Managed, backup);
-			_progress.Text += "Created backup.\n";
+			_progress.Text += "[I] Created backup.\n";
 			// _progress.Set("Buffer", "Created backup.");
 		}
 		else
 		{
-			_progress.Text += "Skipped backup creation.\n";
+			_progress.Text += "[I] Skipped backup creation.\n";
 			// _progress.Set("Buffer", "Skipped backup creation.");
 		}
 	}
@@ -107,7 +107,8 @@ public partial class Frown : Node2D
 	
 	public void DeleteBackup()
 	{
-		GD.Print("todo");
+		// GD.Print("todo");
+		_progress.Text += "[W] Not yet implemented.\n";
 	}
 	
 	public void Restore()
@@ -122,21 +123,21 @@ public partial class Frown : Node2D
 			string MonoBleedingEdge = Path.Combine(ukPath, "ULTRAKILL_Data", "MonoBleedingEdge");
 			if (!Directory.Exists(backup))
 			{
-				GD.Print("backup doesn't exist");
+				_progress.Text += "[E] Backup not found.\n";
+				// GD.Print("backup doesn't exist");
 				return;
 			}
 			if (!File.Exists(ukExe))
 			{
-				GD.Print("FROWN not installed");
+				_progress.Text += "[E] FROWN not installed.\n";
+				// GD.Print("FROWN not installed");
 				return;
 			}
 		
 			Directory.Delete(Managed, true);
-			_progress.Text += "Deleted Managed...\n";
-			// _progress.Set("Buffer", "Deleted Managed...");
+			_progress.Text += "[I] Deleted Managed...\n";
 			Directory.Delete(MonoBleedingEdge, true);
-			_progress.Text += "Deleted MonoBleedingEdge...\n";
-			// _progress.Set("Buffer", "Deleted MonoBleedingEdge...");
+			_progress.Text += "[I] Deleted MonoBleedingEdge...\n";
 			
 			string[] files =  { VersionPath, ukExe, 
 								UnityPlayer, "discord_game_sdk.bundle", 
@@ -146,20 +147,20 @@ public partial class Frown : Node2D
 			foreach (string file in files){
 				try{
 					File.Delete(file);
-					_progress.Text += "Deleted " + file + "\n";
+					_progress.Text += "[I] Deleted " + file + "\n";
 					// _progress.Set("Buffer", "Deleted " + file + "...");
 				}
 				catch(Exception e){
-					_progress.Text += file + " does not exist, skipping\n";
+					_progress.Text += "[I] " + file + " does not exist, skipping\n";
 					// _progress.Set("Buffer", file + " does not exist, skipping...");
 				}
 			
 			}
 			Directory.CreateDirectory(Managed);
-			_progress.Text += "Recreated Managed...\n";
+			_progress.Text += "[I] Recreated Managed...\n";
 			// _progress.Set("Buffer", "Recreated Managed...");
 			CopyFilesRecursively(backup, Managed);
-			_progress.Text += "Restored Managed...\n";
+			_progress.Text += "[I] Restored Managed...\n";
 			// _progress.Set("Buffer", "Restored Managed...");
 		}	
 		if (OS.GetName() != "macOS")
@@ -167,7 +168,7 @@ public partial class Frown : Node2D
 		string ukApp = Path.Combine(ukPath, "ULTRAKILL.app");
 		try{
 			Directory.Delete(ukApp, true);
-			_progress.Text += "Deleted ULTRAKILL.app\n";
+			_progress.Text += "[I] Deleted ULTRAKILL.app\n";
 			// _progress.Set("Buffer", "Deleted ULTRAKILL.app...");
 		}
 		catch (Exception e){
@@ -187,7 +188,7 @@ public partial class Frown : Node2D
 		if(!File.Exists(frownConfig)){
 			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0";
 			File.WriteAllText(frownConfig, defaultConfig);
-			_progress.Text += "Created frown.ini\n";
+			_progress.Text += "[I] Created frown.ini\n";
 			// // _progress.Set("Buffer", "Created frown.ini...");
 			_ukPath.Show();
 		}
@@ -197,11 +198,11 @@ public partial class Frown : Node2D
 		backend = byte.Parse(data["main"]["renderer"]);
 		modStatus = bool.Parse(data["main"]["bepinex"]);
 		
-		_progress.Text += "Loaded frown.ini\n";
+		_progress.Text += "[I] Loaded frown.ini\n";
 		// // _progress.Set("Buffer", "Loaded frown.ini...");
 		
 		GetUKInfo();
-		_progress.Text += "Parsed ULTRAKILL install info\n";
+		_progress.Text += "[I] Parsed ULTRAKILL install info\n";
 		// _progress.Set("Buffer", "Parsed ULTRAKILL install info...");
 		
 		GD.Print(ukPath);
@@ -227,6 +228,7 @@ public partial class Frown : Node2D
 						GD.Print(verStr);
 					}
 					catch(Exception e){
+						_progress.Text += "[W] Failed to get version.txt...\n";
 						GD.Print("Failed to get version.txt, defaulting to Unknown");
 						GD.Print(e.ToString());
 					}
@@ -236,6 +238,8 @@ public partial class Frown : Node2D
 		
 		if (!verStr.Equals(ukVersion)){
 			GD.Print("versions do not match!");
+			_progress.Text += "[W] Versions do not match!\n";
+			_progress.Text += "[W] " + verStr + " != " + ukVersion + "\n";
 			GD.Print("verStr " + verStr);
 			GD.Print(verStr.Length);
 			GD.Print("ukVersion " + ukVersion);
@@ -243,8 +247,7 @@ public partial class Frown : Node2D
 			// return;
 		}
 		ZipFile.ExtractToDirectory(baseZip, ukPath, true);
-		_progress.Text += "Installed FROWN for Linux\n";
-		// _progress.Set("Buffer", "Installed FROWN for Linux.");
+		_progress.Text += "[I] Installed FROWN for Linux\n";
 		
 		if (OS.GetName() == "macOS")
 		{
@@ -258,48 +261,48 @@ public partial class Frown : Node2D
 		
 			if (!Directory.Exists(ukApp))
 			{
-				GD.Print("ukApp not found");
-				_progress.Text += "couldn't find ultrakill.app...\n";
-				// _progress.Set("Buffer", "Couldn't find ULTRAKILL.app...");
+				_progress.Text += "[E] couldn't find ultrakill.app...\n";
 				return;
 			}
 			
 			try{
 				File.CreateSymbolicLink(savesLink, saves);
-				_progress.Text += "Linked Saves...\n";
+				_progress.Text += "[I] Linked Saves...\n";
 				// _progress.Set("Buffer", "Linked Saves...");
 				File.CreateSymbolicLink(preferencesLink, preferences);
-				_progress.Text += "Linked Preferences...\n";
+				_progress.Text += "[I] Linked Preferences...\n";
 				// _progress.Set("Buffer", "Linked Preferences...");
 				File.CreateSymbolicLink(cybergrindLink, cybergrind);
-				_progress.Text += "Linked CyberGrind...\n";
+				_progress.Text += "[I] Linked CyberGrind...\n";
 				// _progress.Set("Buffer", "Linked CyberGrind...");
 			}
 			catch (Exception e)
 			{
+				_progress.Text += "[E] Failed to create symlinks, check console...\n";
 				GD.Print(e.ToString());
 			}
 			string ukData = Path.Combine(ukPath, "ULTRAKILL_Data");
 			string ukAppData = Path.Combine(ukApp, "Contents", "Resources", "Data");
 			CopyFilesRecursively(ukData, ukAppData);
-			_progress.Text += "Copied ULTRAKILL data to ULTRAKILL.app...\n";
+			_progress.Text += "[I] Copied ULTRAKILL data to ULTRAKILL.app...\n";
 			// _progress.Set("Buffer", "Copied ULTRAKILL data to ULTRAKILL.app...");
 			string oldManaged = Path.Combine(ukAppData, "Managed");
 			string newManaged = Path.Combine(ukAppData, "NewManaged");
 			CopyFilesRecursively(newManaged, oldManaged);
-			_progress.Text += "Finalized installation of FROWN for macOS.\n";
+			_progress.Text += "[I] Finalized installation of FROWN for macOS.\n";
 			// _progress.Set("Buffer", "Finalized installation of FROWN for macOS.");
 		}
 	}
 
 	public void GetUKPath(string dir)
 	{
-		GD.Print(dir);
+		// GD.Print(dir);
+		// _progress.Text += "ULTRAKILL path: " + dir;
 		ukPath = Path.GetFullPath(dir);
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
 		data["main"]["ukPath"] = Path.GetFullPath(dir);
 		new FileIniDataParser().WriteFile(frownConfig, data);
-		_progress.Text += "Saved changes.\n";
+		_progress.Text += "[I] Saved changes.\n";
 		// _progress.Set("Buffer", "Saved changes.");
 		
 		Backup();
@@ -307,12 +310,14 @@ public partial class Frown : Node2D
 
 	public void Command()
 	{
-		GD.Print("todo: print launch command for steam");
+		// GD.Print("todo: print launch command for steam");
+		_progress.Text += "[W] Not yet implemented.\n";
 	}
 	
 	public void Launch()
 	{
-		GD.Print("todo: launch game");
+		// GD.Print("todo: launch game");
+		_progress.Text += "[W] Not yet implemented.\n";
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

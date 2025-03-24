@@ -52,16 +52,15 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Progress" type="RichTextLabel" parent="."]
-offset_left = 513.0
+[node name="Progress" type="RichTextLabel" parent="." node_paths=PackedStringArray("_log")]
 offset_top = 317.0
 offset_right = 768.0
 offset_bottom = 432.0
 scroll_active = false
 scroll_following = true
-horizontal_alignment = 2
 vertical_alignment = 2
 script = ExtResource("2_1xdwo")
+_log = NodePath("../Buttons/Log")
 
 [node name="ButtonDesc" type="RichTextLabel" parent="."]
 offset_left = 256.0
@@ -137,7 +136,7 @@ position = Vector2(63, 14)
 scale = Vector2(128, 30)
 texture = ExtResource("5_3ls4m")
 
-[node name="ACF" type="Button" parent="Buttons" node_paths=PackedStringArray("_progress")]
+[node name="ACF" type="Button" parent="Buttons"]
 offset_left = 514.0
 offset_top = 255.0
 offset_right = 640.0
@@ -146,7 +145,6 @@ theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Create ACF..."
 script = ExtResource("5_lg015")
-_progress = NodePath("")
 metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Buttons/ACF"]
@@ -174,6 +172,22 @@ metadata/_edit_group_ = true
 z_index = -1
 position = Vector2(63, 14)
 scale = Vector2(128, 30)
+texture = ExtResource("5_3ls4m")
+
+[node name="Log" type="Button" parent="Buttons"]
+offset_left = 128.0
+offset_top = 287.0
+offset_right = 254.0
+offset_bottom = 314.0
+theme = ExtResource("4_ecwwl")
+theme_override_font_sizes/font_size = 16
+text = "Show log..."
+metadata/_edit_group_ = true
+
+[node name="Border" type="Sprite2D" parent="Buttons/Log"]
+z_index = -1
+position = Vector2(63, 13.5)
+scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="Switches" type="Node" parent="."]
@@ -316,6 +330,8 @@ texture = ExtResource("15_4ndjb")
 [connection signal="pressed" from="Buttons/ACF" to="Buttons/ACF" method="_on_pressed"]
 [connection signal="mouse_entered" from="Buttons/Launch" to="ButtonDesc" method="_on_launch_mouse_entered"]
 [connection signal="pressed" from="Buttons/Launch" to="." method="_on_launch_pressed"]
+[connection signal="mouse_entered" from="Buttons/Log" to="ButtonDesc" method="_on_log_mouse_entered"]
+[connection signal="pressed" from="Buttons/Log" to="Progress" method="_on_log_pressed"]
 [connection signal="mouse_entered" from="Switches/Mods" to="ButtonDesc" method="_on_mods_mouse_entered"]
 [connection signal="mouse_entered" from="Switches/API" to="ButtonDesc" method="_on_api_mouse_entered"]
 [connection signal="mouse_entered" from="Switches/Wayland" to="ButtonDesc" method="_on_wayland_mouse_entered"]

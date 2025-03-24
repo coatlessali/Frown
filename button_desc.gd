@@ -37,3 +37,6 @@ func _on_wayland_mouse_entered() -> void:
 
 func _on_check_button_mouse_entered() -> void:
 	text = "Enable Mangohud. (Linux Only) (TODO)"
+
+func _on_log_mouse_entered() -> void:
+	text = "Show log and copy to clipboard."

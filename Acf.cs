@@ -44,22 +44,22 @@ public partial class Acf : Button
 	{
 		if (!Directory.Exists(steamapps)){
 			GD.Print("Steam install not found.");
-			_progress.Text = "Steam install not found.";
+			_progress.Text += "Steam install not found.";
 			return;
 		}
 		if (File.Exists(acf)){
 			GD.Print("acf already found, deleting");
-			_progress.Text = "Deleting acf file...";
+			_progress.Text += "Deleting acf file...";
 			try{File.Delete(acf);}
 			catch(Exception e){GD.Print(e.ToString());_progress.Text="Failed to delete ACF. Check console...";}
 		}
 		try{
 			File.WriteAllText(acf, contents);
 			GD.Print("wrote acf file");
-			_progress.Text = "Wrote ACF file...";
+			_progress.Text += "Wrote ACF file...";
 		}
 		catch(Exception e){
-			_progress.Text = "Failed to write ACF file, check console...";
+			_progress.Text += "Failed to write ACF file, check console...";
 			GD.Print(e.ToString());
 		}
 	}
