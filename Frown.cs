@@ -5,7 +5,6 @@ using System.IO.Compression;
 using System.Text.RegularExpressions;
 using IniParser;
 using IniParser.Model;
-// using Microsoft.VisualBasic.FileIO;
 
 public partial class Frown : Node2D
 {
@@ -56,65 +55,45 @@ public partial class Frown : Node2D
 	bool mangohud = false;
 	bool modStatus = false;
 	byte backend = (byte) RenderAPI.OpenGL;
-	// Called when the node enters the scene tree for the first time.
 	
-	public void GetUKInfo()
+	private void GetUKInfo()
 	{
-		if (ukPath == "."){
+		if (ukPath == ".")
 			return;
-		}
 		string levelZero = Path.Combine(ukPath, "ULTRAKILL_Data", "level0");
 		byte[] levelZeroVer = new byte[12];
 		using (FileStream fs = File.OpenRead(levelZero))
 		{
 			fs.Seek(48, SeekOrigin.Begin);
 			for (byte i = 0; i < 12; i++)
-			{
 				levelZeroVer[i] = (byte) fs.ReadByte();
-			}
 		}
 		ukVersion = System.Text.Encoding.Default.GetString(levelZeroVer).Trim();
 		ukVersion = Regex.Replace(ukVersion, @"[^\u0020-\u007E]", string.Empty);
-		// GD.Print(ukVersion);
+		_progress.Text += $"[I] ULTRAKILL Version: {ukVersion}\n";
 	}
 	
-	public void GetAPI()
-	{
-		if (_api.ToggleMode){
-			backend = (byte) RenderAPI.Vulkan;
-		}
-		else{
-			backend = (byte) RenderAPI.OpenGL;
-		}
-	}
-	
-	public void Backup()
+	private void Backup()
 	{
 		string Managed = Path.Combine(ukPath, "ULTRAKILL_Data", "Managed");
-		if (!Directory.Exists(backup))
-		{
-			Directory.CreateDirectory(backup);
-			_progress.Text += "[I] Created backup directory.\n";
-			// _progress.Set("Buffer", "Created backup directory.");
-			CopyFilesRecursively(Managed, backup);
-			_progress.Text += "[I] Created backup.\n";
-			// _progress.Set("Buffer", "Created backup.");
-		}
-		else
+		if (Directory.Exists(backup))
 		{
 			_progress.Text += "[I] Skipped backup creation.\n";
-			// _progress.Set("Buffer", "Skipped backup creation.");
+			return;
 		}
+		Directory.CreateDirectory(backup);
+		_progress.Text += "[I] Created backup directory.\n";
+		CopyFilesRecursively(Managed, backup);
+		_progress.Text += "[I] Created backup.\n";
 	}
 	
 	
-	public void DeleteBackup()
+	private void DeleteBackup()
 	{
-		// GD.Print("todo");
 		_progress.Text += "[W] Not yet implemented.\n";
 	}
 	
-	public void Restore()
+	private void Restore()
 	{
 		if (OS.GetName() == "Linux")
 		{
@@ -127,13 +106,11 @@ public partial class Frown : Node2D
 			if (!Directory.Exists(backup))
 			{
 				_progress.Text += "[E] Backup not found.\n";
-				// GD.Print("backup doesn't exist");
 				return;
 			}
 			if (!File.Exists(ukExe))
 			{
 				_progress.Text += "[E] FROWN not installed.\n";
-				// GD.Print("FROWN not installed");
 				return;
 			}
 		
@@ -150,21 +127,17 @@ public partial class Frown : Node2D
 			foreach (string file in files){
 				try{
 					File.Delete(file);
-					_progress.Text += "[I] Deleted " + file + "\n";
-					// _progress.Set("Buffer", "Deleted " + file + "...");
+					_progress.Text += $"[I] Deleted {file}\n";
 				}
 				catch(Exception e){
-					_progress.Text += "[I] " + file + " does not exist, skipping\n";
-					// _progress.Set("Buffer", file + " does not exist, skipping...");
+					_progress.Text += $"[I] {file} does not exist, skipping\n";
 				}
 			
 			}
 			Directory.CreateDirectory(Managed);
 			_progress.Text += "[I] Recreated Managed...\n";
-			// _progress.Set("Buffer", "Recreated Managed...");
 			CopyFilesRecursively(backup, Managed);
 			_progress.Text += "[I] Restored Managed...\n";
-			// _progress.Set("Buffer", "Restored Managed...");
 		}	
 		if (OS.GetName() != "macOS")
 		  return;
@@ -172,7 +145,6 @@ public partial class Frown : Node2D
 		try{
 			Directory.Delete(ukApp, true);
 			_progress.Text += "[I] Deleted ULTRAKILL.app\n";
-			// _progress.Set("Buffer", "Deleted ULTRAKILL.app...");
 		}
 		catch (Exception e){
 			GD.Print(e.ToString());
@@ -193,9 +165,9 @@ public partial class Frown : Node2D
 			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0\nmangohud = false";
 			File.WriteAllText(frownConfig, defaultConfig);
 			_progress.Text += "[I] Created frown.ini\n";
-			// // _progress.Set("Buffer", "Created frown.ini...");
 			_ukPath.Show();
 		}
+		
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
 		ukPath = data["main"]["ukPath"];
 		wayland = bool.Parse(data["main"]["wayland"]);
@@ -203,23 +175,21 @@ public partial class Frown : Node2D
 		mangohud = bool.Parse(data["main"]["mangohud"]);
 		modStatus = bool.Parse(data["main"]["bepinex"]);
 		
+		_wayland.ButtonPressed = wayland;
+		_api.ButtonPressed = false;
+		if (backend == (byte) RenderAPI.Vulkan)
+			_api.ButtonPressed = true;
+		_mangohud.ButtonPressed = mangohud;
+		_mods.ButtonPressed = modStatus;
+		
 		_progress.Text += "[I] Loaded frown.ini\n";
-		// // _progress.Set("Buffer", "Loaded frown.ini...");
 		
 		GetUKInfo();
 		_progress.Text += "[I] Parsed ULTRAKILL install info\n";
-		// _progress.Set("Buffer", "Parsed ULTRAKILL install info...");
-		
-		GD.Print(ukPath);
-		GD.Print(wayland);
-		GD.Print(backend);
-		GD.Print(modStatus);
-		GD.Print(ukVersion);
 	}
 
-	public void Install(string baseZip)
+	private void Install(string baseZip)
 	{
-		// GD.Print(baseZip);
 		string verStr = "Unknown";
 		using (ZipArchive zip = ZipFile.Open(baseZip, ZipArchiveMode.Read)){
 			foreach (ZipArchiveEntry entry in zip.Entries){
@@ -230,11 +200,10 @@ public partial class Frown : Node2D
 						stream.CopyTo(mem);
 						byte[] ver = mem.ToArray();
 						verStr = System.Text.Encoding.Default.GetString(ver).Trim();
-						GD.Print(verStr);
+						_progress.Text += $"[I] Zip version is {verStr}.\n";
 					}
 					catch(Exception e){
 						_progress.Text += "[W] Failed to get version.txt...\n";
-						GD.Print("Failed to get version.txt, defaulting to Unknown");
 						GD.Print(e.ToString());
 					}
 				}
@@ -273,13 +242,10 @@ public partial class Frown : Node2D
 			try{
 				File.CreateSymbolicLink(savesLink, saves);
 				_progress.Text += "[I] Linked Saves...\n";
-				// _progress.Set("Buffer", "Linked Saves...");
 				File.CreateSymbolicLink(preferencesLink, preferences);
 				_progress.Text += "[I] Linked Preferences...\n";
-				// _progress.Set("Buffer", "Linked Preferences...");
 				File.CreateSymbolicLink(cybergrindLink, cybergrind);
 				_progress.Text += "[I] Linked CyberGrind...\n";
-				// _progress.Set("Buffer", "Linked CyberGrind...");
 			}
 			catch (Exception e)
 			{
@@ -290,32 +256,26 @@ public partial class Frown : Node2D
 			string ukAppData = Path.Combine(ukApp, "Contents", "Resources", "Data");
 			CopyFilesRecursively(ukData, ukAppData);
 			_progress.Text += "[I] Copied ULTRAKILL data to ULTRAKILL.app...\n";
-			// _progress.Set("Buffer", "Copied ULTRAKILL data to ULTRAKILL.app...");
 			string oldManaged = Path.Combine(ukAppData, "Managed");
 			string newManaged = Path.Combine(ukAppData, "NewManaged");
 			CopyFilesRecursively(newManaged, oldManaged);
 			_progress.Text += "[I] Finalized installation of FROWN for macOS.\n";
-			// _progress.Set("Buffer", "Finalized installation of FROWN for macOS.");
 		}
 	}
 
-	public void GetUKPath(string dir)
+	private void GetUKPath(string dir)
 	{
-		// GD.Print(dir);
-		// _progress.Text += "ULTRAKILL path: " + dir;
 		ukPath = Path.GetFullPath(dir);
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
 		data["main"]["ukPath"] = Path.GetFullPath(dir);
 		new FileIniDataParser().WriteFile(frownConfig, data);
 		_progress.Text += "[I] Saved changes.\n";
-		// _progress.Set("Buffer", "Saved changes.");
 		
 		Backup();
 	}
 
-	public void Command()
+	private void Command()
 	{
-		bool mangohud = true; // TODO: Implement an actual variable, this is just here to avoid a compiler error for now
 		string sdl;
 		string hud;
 		string launch;
@@ -323,62 +283,49 @@ public partial class Frown : Node2D
 		string filler = "; echo %command%";
 		
 		// Wayland
+		sdl = "SDL_VIDEODRIVER=x11";
 		if (wayland)
 			sdl = "SDL_VIDEODRIVER=wayland";
-		else
-			sdl = "SDL_VIDEODRIVER=x11";
 			
 		// Mangohud
-		if (mangohud){
-			if (backend == (byte) RenderAPI.Vulkan)
-				hud = "MANGOHUD=1";
-			else
-				hud = "mangohud --dlsym";
-		} /* When I wrote the above, I googled how to do an 
-			else if statement and Google told me that C# doesn't
-			have else if statements. For some reason, I actually
-			believed this and wrote the above. Forgive me. */
-		else
-			hud = "";
-			
+		hud = "MANGOHUD=0";
+		if(mangohud)
+			switch(backend){
+				case (byte) RenderAPI.Vulkan: hud = "MANGOHUD=1"; break;
+				case (byte) RenderAPI.OpenGL: hud = "mangohud --dlsym"; break;
+			}	
+		
 		// Launch command
+		launch = "./ULTRAKILL.x86_64";
 		if (modStatus)
 			launch = "./run_bepinex.sh ULTRAKILL.x86_64";
-		else
-			launch = "./ULTRAKILL.x86_64";
-			
+		
 		// Render API
+		force = "-force-glcore";
 		if (backend == (byte) RenderAPI.Vulkan)
 			force = "-force-vulkan";
-		else
-			force = "-force-glcore";
 		
 		string opts = $"{sdl} {hud} {launch} {force}{filler}";
-		// var clipboard = DisplayServer.ClipboardGet();
 		DisplayServer.ClipboardSet(opts);
 		_progress.Text += $"[I] Copied launch command: {opts}\n";
-		
 	}
 	
-	public void SaveSettings()
+	private void SaveSettings()
 	{
 		_progress.Text += "[W] Not yet implemented.\n";
+		modStatus = false;
 		if (_mods.ButtonPressed)
 			modStatus = true;
-		else
-			modStatus = false;
+		backend = (byte) RenderAPI.OpenGL;
 		if (_api.ButtonPressed)
 			backend = (byte) RenderAPI.Vulkan;
-		else
-			backend = (byte) RenderAPI.OpenGL;
+		wayland = false;
 		if (_wayland.ButtonPressed)
 			wayland = true;
-		else
-			wayland = false;
+		mangohud = false;
 		if (_mangohud.ButtonPressed)
 			mangohud = true;
-		else
-			mangohud = false;
+			
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
 		data["main"]["wayland"] = wayland.ToString();
 		data["main"]["bepinex"] = modStatus.ToString();
@@ -388,9 +335,8 @@ public partial class Frown : Node2D
 		_progress.Text += "[I] Saved changes.\n";
 	}
 	
-	public void Launch()
+	private void Launch()
 	{
-		// GD.Print("todo: launch game");
 		_progress.Text += "[W] Not yet implemented.\n";
 	}
 

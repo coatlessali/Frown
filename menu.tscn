@@ -99,7 +99,7 @@ texture = ExtResource("5_3ls4m")
 [node name="Install" type="Button" parent="Buttons"]
 offset_left = 514.0
 offset_top = 161.0
-offset_right = 640.0
+offset_right = 576.0
 offset_bottom = 188.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
@@ -113,20 +113,14 @@ scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
 
 [node name="Uninstall" type="Button" parent="Buttons"]
-offset_left = 514.0
-offset_top = 192.0
+offset_left = 577.0
+offset_top = 161.0
 offset_right = 640.0
-offset_bottom = 219.0
+offset_bottom = 188.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Uninstall..."
 metadata/_edit_group_ = true
-
-[node name="Border" type="Sprite2D" parent="Buttons/Uninstall"]
-z_index = -1
-position = Vector2(63, 13.5)
-scale = Vector2(128, 29)
-texture = ExtResource("5_3ls4m")
 
 [node name="LaunchCommand" type="Button" parent="Buttons"]
 offset_left = 514.0
@@ -216,6 +210,14 @@ z_index = -1
 position = Vector2(63, 13.5)
 scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
+
+[node name="Label" type="Label" parent="Buttons"]
+offset_left = 513.0
+offset_top = 190.0
+offset_right = 684.0
+offset_bottom = 221.0
+text = "i'm gonna put an install mods and open mods folder button here later"
+autowrap_mode = 2
 
 [node name="Switches" type="Node" parent="."]
 

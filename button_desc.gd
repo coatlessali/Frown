@@ -8,7 +8,7 @@ extends RichTextLabel
 
 ### Buttons
 func _on_launch_command_mouse_entered() -> void:
-	text = "Copy launch command to clipboard for Steam.\n\n(Linux only.)"
+	text = "Copy launch command to clipboard for Steam. Save your settings before clicking this.\n\n(Linux only.)"
 
 func _on_uk_path_button_mouse_entered() -> void:
 	text = "Select ULTRAKILL folder."
