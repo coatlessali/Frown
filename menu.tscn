@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ddo553r4bg12y"]
+[gd_scene load_steps=27 format=3 uid="uid://ddo553r4bg12y"]
 
 [ext_resource type="Script" uid="uid://pqhtgys3qw8x" path="res://Frown.cs" id="1_o15y0"]
 [ext_resource type="Script" uid="uid://chf0svbevv75y" path="res://Progress.cs" id="2_1xdwo"]
@@ -8,17 +8,24 @@
 [ext_resource type="Script" uid="uid://d27saoc78nxu5" path="res://BaseZip.cs" id="4_y0p7p"]
 [ext_resource type="Texture2D" uid="uid://c0k6ceyh264fk" path="res://white.png" id="5_3ls4m"]
 [ext_resource type="Script" uid="uid://cn1rauoq1sfbg" path="res://Acf.cs" id="5_lg015"]
+[ext_resource type="Script" uid="uid://bg1y5nth3cfo4" path="res://LaunchCommand.cs" id="6_4ndjb"]
 [ext_resource type="FontFile" uid="uid://jsnp4a1vnwe6" path="res://fonts/windows-xp-tahoma.ttf" id="8_dwrpx"]
 [ext_resource type="Texture2D" uid="uid://d3556cxb385mm" path="res://button-red-dark.png" id="8_iqepy"]
 [ext_resource type="Script" uid="uid://45py52d4rdt2" path="res://Description.cs" id="9_g7jxm"]
 [ext_resource type="Texture2D" uid="uid://dlv6pr1l811fg" path="res://button-red-bright.png" id="9_h1wq0"]
 [ext_resource type="Texture2D" uid="uid://ctnrnsxagwa30" path="res://button-red.png" id="10_dwrpx"]
+[ext_resource type="Script" uid="uid://bwjibpo8q0iuf" path="res://API.cs" id="11_3ls4m"]
+[ext_resource type="Script" uid="uid://bfb02t8sx6we" path="res://Wayland.cs" id="12_5h80m"]
 [ext_resource type="Texture2D" uid="uid://5566bweijk4x" path="res://smile-left.png" id="13_oxnod"]
+[ext_resource type="Script" uid="uid://c1dfydiintqhl" path="res://MangoHud.cs" id="13_w25hu"]
 [ext_resource type="Texture2D" uid="uid://nt1r2d2kdmo" path="res://smile-middle.png" id="14_gd0jp"]
 [ext_resource type="Texture2D" uid="uid://d3kufamybw8l8" path="res://smile-right.png" id="15_4ndjb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecwwl"]
 bg_color = Color(0.0997504, 0.0997504, 0.0997503, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4ndjb"]
+texture = ExtResource("10_dwrpx")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g7jxm"]
 texture = ExtResource("8_iqepy")
@@ -32,13 +39,14 @@ texture = ExtResource("8_iqepy")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gd0jp"]
 texture = ExtResource("10_dwrpx")
 
-[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_command", "_launch", "_mods", "_api", "_wayland", "_mangohud", "_ukPath", "_baseZip")]
+[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_command", "_launch", "_save", "_mods", "_api", "_wayland", "_mangohud", "_ukPath", "_baseZip")]
 script = ExtResource("1_o15y0")
 _progress = NodePath("Progress")
 _install = NodePath("Buttons/Install")
 _uninstall = NodePath("Buttons/Uninstall")
 _command = NodePath("Buttons/LaunchCommand")
 _launch = NodePath("Buttons/Launch")
+_save = NodePath("Buttons/Save")
 _mods = NodePath("Switches/Mods")
 _api = NodePath("Switches/API")
 _wayland = NodePath("Switches/Wayland")
@@ -128,6 +136,7 @@ offset_bottom = 251.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Copy Command..."
+script = ExtResource("6_4ndjb")
 metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Buttons/LaunchCommand"]
@@ -161,10 +170,12 @@ offset_bottom = 314.0
 theme = ExtResource("4_ecwwl")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxTexture_4ndjb")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_g7jxm")
 theme_override_styles/hover = SubResource("StyleBoxTexture_jspdm")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_oxnod")
 theme_override_styles/normal = SubResource("StyleBoxTexture_gd0jp")
+disabled = true
 text = "Launch..."
 metadata/_edit_group_ = true
 
@@ -176,15 +187,31 @@ texture = ExtResource("5_3ls4m")
 
 [node name="Log" type="Button" parent="Buttons"]
 offset_left = 128.0
+offset_top = 255.0
+offset_right = 254.0
+offset_bottom = 282.0
+theme = ExtResource("4_ecwwl")
+theme_override_font_sizes/font_size = 16
+text = "Copy log..."
+metadata/_edit_group_ = true
+
+[node name="Border" type="Sprite2D" parent="Buttons/Log"]
+z_index = -1
+position = Vector2(63, 13.5)
+scale = Vector2(128, 29)
+texture = ExtResource("5_3ls4m")
+
+[node name="Save" type="Button" parent="Buttons"]
+offset_left = 128.0
 offset_top = 287.0
 offset_right = 254.0
 offset_bottom = 314.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
-text = "Show log..."
+text = "Save changes..."
 metadata/_edit_group_ = true
 
-[node name="Border" type="Sprite2D" parent="Buttons/Log"]
+[node name="Border" type="Sprite2D" parent="Buttons/Save"]
 z_index = -1
 position = Vector2(63, 13.5)
 scale = Vector2(128, 29)
@@ -198,7 +225,6 @@ offset_top = 129.0
 offset_right = 254.0
 offset_bottom = 157.0
 theme = ExtResource("4_ecwwl")
-disabled = true
 text = "Mods"
 alignment = 1
 metadata/_edit_group_ = true
@@ -215,8 +241,9 @@ offset_top = 161.0
 offset_right = 254.0
 offset_bottom = 188.0
 theme = ExtResource("4_ecwwl")
-text = "OpenGL"
+text = "Vulkan"
 alignment = 1
+script = ExtResource("11_3ls4m")
 metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/API"]
@@ -233,6 +260,7 @@ offset_bottom = 220.0
 theme = ExtResource("4_ecwwl")
 text = "Wayland"
 alignment = 1
+script = ExtResource("12_5h80m")
 metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/Wayland"]
@@ -249,6 +277,7 @@ offset_bottom = 251.0
 theme = ExtResource("4_ecwwl")
 text = "Mangohud"
 alignment = 1
+script = ExtResource("13_w25hu")
 metadata/_edit_group_ = true
 
 [node name="Border" type="Sprite2D" parent="Switches/MangoHud"]
@@ -332,6 +361,8 @@ texture = ExtResource("15_4ndjb")
 [connection signal="pressed" from="Buttons/Launch" to="." method="_on_launch_pressed"]
 [connection signal="mouse_entered" from="Buttons/Log" to="ButtonDesc" method="_on_log_mouse_entered"]
 [connection signal="pressed" from="Buttons/Log" to="Progress" method="_on_log_pressed"]
+[connection signal="mouse_entered" from="Buttons/Save" to="ButtonDesc" method="_on_save_mouse_entered"]
+[connection signal="pressed" from="Buttons/Save" to="Progress" method="_on_log_pressed"]
 [connection signal="mouse_entered" from="Switches/Mods" to="ButtonDesc" method="_on_mods_mouse_entered"]
 [connection signal="mouse_entered" from="Switches/API" to="ButtonDesc" method="_on_api_mouse_entered"]
 [connection signal="mouse_entered" from="Switches/Wayland" to="ButtonDesc" method="_on_wayland_mouse_entered"]

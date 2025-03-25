@@ -21,6 +21,8 @@ public partial class Frown : Node2D
 	public Button _command;
 	[Export]
 	public Button _launch;
+	[Export]
+	public Button _save;
 	// Switches
 	[Export]
 	public CheckButton _mods;
@@ -47,11 +49,12 @@ public partial class Frown : Node2D
 	string frownConfig = ProjectSettings.GlobalizePath("user://frown.ini");
 	string backup = ProjectSettings.GlobalizePath("user://Managed");
 	string ukPath;
-	string launchCommand;
+	// string launchCommand; // convert to string[] later? might make launch button easier
 	string ukVersion = "Unknown";
 	string frownVersion = "None";
 	bool wayland = false;
-	bool modStatus;
+	bool mangohud = false;
+	bool modStatus = false;
 	byte backend = (byte) RenderAPI.OpenGL;
 	// Called when the node enters the scene tree for the first time.
 	
@@ -184,9 +187,10 @@ public partial class Frown : Node2D
 		_ukPath.DirSelected += GetUKPath;
 		_command.Pressed += Command;
 		_launch.Pressed += Launch;
+		_save.Pressed += SaveSettings;
 		
 		if(!File.Exists(frownConfig)){
-			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0";
+			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0\nmangohud = false";
 			File.WriteAllText(frownConfig, defaultConfig);
 			_progress.Text += "[I] Created frown.ini\n";
 			// // _progress.Set("Buffer", "Created frown.ini...");
@@ -196,6 +200,7 @@ public partial class Frown : Node2D
 		ukPath = data["main"]["ukPath"];
 		wayland = bool.Parse(data["main"]["wayland"]);
 		backend = byte.Parse(data["main"]["renderer"]);
+		mangohud = bool.Parse(data["main"]["mangohud"]);
 		modStatus = bool.Parse(data["main"]["bepinex"]);
 		
 		_progress.Text += "[I] Loaded frown.ini\n";
@@ -310,8 +315,77 @@ public partial class Frown : Node2D
 
 	public void Command()
 	{
-		// GD.Print("todo: print launch command for steam");
+		bool mangohud = true; // TODO: Implement an actual variable, this is just here to avoid a compiler error for now
+		string sdl;
+		string hud;
+		string launch;
+		string force;
+		string filler = "; echo %command%";
+		
+		// Wayland
+		if (wayland)
+			sdl = "SDL_VIDEODRIVER=wayland";
+		else
+			sdl = "SDL_VIDEODRIVER=x11";
+			
+		// Mangohud
+		if (mangohud){
+			if (backend == (byte) RenderAPI.Vulkan)
+				hud = "MANGOHUD=1";
+			else
+				hud = "mangohud --dlsym";
+		} /* When I wrote the above, I googled how to do an 
+			else if statement and Google told me that C# doesn't
+			have else if statements. For some reason, I actually
+			believed this and wrote the above. Forgive me. */
+		else
+			hud = "";
+			
+		// Launch command
+		if (modStatus)
+			launch = "./run_bepinex.sh ULTRAKILL.x86_64";
+		else
+			launch = "./ULTRAKILL.x86_64";
+			
+		// Render API
+		if (backend == (byte) RenderAPI.Vulkan)
+			force = "-force-vulkan";
+		else
+			force = "-force-glcore";
+		
+		string opts = $"{sdl} {hud} {launch} {force}{filler}";
+		// var clipboard = DisplayServer.ClipboardGet();
+		DisplayServer.ClipboardSet(opts);
+		_progress.Text += $"[I] Copied launch command: {opts}\n";
+		
+	}
+	
+	public void SaveSettings()
+	{
 		_progress.Text += "[W] Not yet implemented.\n";
+		if (_mods.ButtonPressed)
+			modStatus = true;
+		else
+			modStatus = false;
+		if (_api.ButtonPressed)
+			backend = (byte) RenderAPI.Vulkan;
+		else
+			backend = (byte) RenderAPI.OpenGL;
+		if (_wayland.ButtonPressed)
+			wayland = true;
+		else
+			wayland = false;
+		if (_mangohud.ButtonPressed)
+			mangohud = true;
+		else
+			mangohud = false;
+		IniData data = new FileIniDataParser().ReadFile(frownConfig);
+		data["main"]["wayland"] = wayland.ToString();
+		data["main"]["bepinex"] = modStatus.ToString();
+		data["main"]["renderer"] = backend.ToString();
+		data["main"]["mangohud"] = mangohud.ToString();
+		new FileIniDataParser().WriteFile(frownConfig, data);
+		_progress.Text += "[I] Saved changes.\n";
 	}
 	
 	public void Launch()

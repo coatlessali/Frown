@@ -21,11 +21,11 @@ public partial class Progress : RichTextLabel
 		var clipboard = DisplayServer.ClipboardGet();
 		DisplayServer.ClipboardSet(Text);
 		
-		if (Visible){
+		/*if (Visible){
 			Hide();
 		}
 		else{
 			Show();
-		}
+		}*/
 	}
 }
