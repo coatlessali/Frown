@@ -30,3 +30,21 @@ No. Speedrun mods have stated that any addition to the game files is not legal f
 
 ### Is this compatible with mods?
 In theory. You need to use the UNIX version of BepInEx, and if your mod uses Windows specific functionality, or only has shaders compiled for D3D11, you're out of luck.
+
+### Can you make this work with XYZ?
+Here's a table.
+
+| Platform   | Can I? | Will I? | Why?                                                                      |
+| ---------- | ------ | ------- | ------------------------------------------------------------------------- |
+| Win32-i686 | ?      | Maybe   | Would be funny.                                                           |
+| Android    | ?      | No      | Even if possible, I do not want the curse of infinite Android kids.       |
+| Linux-i686 | ?      | Maybe   | Funny embedded devices.                                                   |
+| ChromeOS   | ?      | No      | Don't have test hardware.                                                 |
+| iOS/iPadOS | No     | No      | Don't have test hardware + needs Metal support.                           |
+| macOS-ARM  | No     | No      | Game technically launches, but needs Metal support to function.           |
+| tvOS       | No     | No      | Don't have test hardware + needs Metal support.                           |
+| Switch     | ?      | Maybe   | Would depend on me either having a license or a game of the same version. |
+| Xbox One   | ?      | Maybe   | Would need hardware to test with and an Xbox developer license.           |
+| Xbox X|S   | ?      | Maybe   | See above.                                                                |
+| FreeBSD    | ?      | Maybe   | Might work with the Linux compatibility stuff it has.                     |
+| Other      | ?      | No      | Lack of interest.                                                         |
