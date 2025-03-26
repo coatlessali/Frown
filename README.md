@@ -11,12 +11,22 @@ This is a tool for installing dummy Unity Players for other operating systems in
 - Other Niche Linux-oriented setups
 
 ### What is the point of this?
-This can dramatically lower the amount of dependencies required to run ULTRAKILL on any given Linux computer, as well as CPU overhead.
+This can dramatically lower the amount of dependencies required to run ULTRAKILL on any given Linux computer, as well as CPU overhead. It also eliminates the need to set up WINE/Proton/CrossOver.
 
-|                  | Native           | WINE/Proton                                |
-------------------------------------------------------------------------------------
-| 32-bit libraries | No               | Depends on build settings (usually Yes)    |
-| Vulkan           | Optional 1.0     | Optional 1.0 / 1.3 for DXVK                |
-| OpenGL           | 3.2              | 3.2 (Native) / Later for wined3d           |
-| CPU Extensions   | SSE2             | SSE2                                       |
-| X11              | Optional         | Yes                                        |
+### Will this work forever?
+In theory, it could as long as no Windows specific dependencies are added to the game.
+
+### What's currently broken?
+The chess minigame for one. You can compile your own stockfish executable for your platform (make sure to compile without any extensions) and rename it to the same name as the original stockfish exe, then replace the original if you want it to work.
+
+### Is this actually a compatibility layer like WINE?
+No. That's just a silly lore bit. I like the aesthetic of SmileOS 2.0.
+
+### Is this endorsed by the ULTRAKILL development team?
+No, but it also hasn't been denounced. Yet. If they ask me to take this down, I will. If any of them are reading this and want me to take it down, they can contact me via Discord or [Email](mailto:coatlessali@protonmail.com).
+
+### Can I speedrun with this?
+No. Speedrun mods have stated that any addition to the game files is not legal for runs. Use WINE/Proton/CrossOver instead.
+
+### Is this compatible with mods?
+In theory. You need to use the UNIX version of BepInEx, and if your mod uses Windows specific functionality, or only has shaders compiled for D3D11, you're out of luck.

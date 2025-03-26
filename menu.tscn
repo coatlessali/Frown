@@ -1,25 +1,26 @@
-[gd_scene load_steps=27 format=3 uid="uid://ddo553r4bg12y"]
+[gd_scene load_steps=28 format=3 uid="uid://ddo553r4bg12y"]
 
-[ext_resource type="Script" uid="uid://pqhtgys3qw8x" path="res://Frown.cs" id="1_o15y0"]
-[ext_resource type="Script" uid="uid://chf0svbevv75y" path="res://Progress.cs" id="2_1xdwo"]
-[ext_resource type="Script" uid="uid://cjetgb3v0jj5o" path="res://button_desc.gd" id="2_gd0jp"]
+[ext_resource type="Script" uid="uid://pqhtgys3qw8x" path="res://cs/Frown.cs" id="1_o15y0"]
+[ext_resource type="Script" uid="uid://chf0svbevv75y" path="res://cs/Progress.cs" id="2_1xdwo"]
+[ext_resource type="Script" uid="uid://cjetgb3v0jj5o" path="res://gd/button_desc.gd" id="2_gd0jp"]
 [ext_resource type="Theme" uid="uid://22q8psrdhqtp" path="res://menu.theme" id="4_ecwwl"]
-[ext_resource type="Script" uid="uid://ctpavcg1gvmmm" path="res://UkPath.cs" id="4_wij6f"]
-[ext_resource type="Script" uid="uid://d27saoc78nxu5" path="res://BaseZip.cs" id="4_y0p7p"]
-[ext_resource type="Texture2D" uid="uid://c0k6ceyh264fk" path="res://white.png" id="5_3ls4m"]
-[ext_resource type="Script" uid="uid://cn1rauoq1sfbg" path="res://Acf.cs" id="5_lg015"]
-[ext_resource type="Script" uid="uid://bg1y5nth3cfo4" path="res://LaunchCommand.cs" id="6_4ndjb"]
+[ext_resource type="Script" uid="uid://ctpavcg1gvmmm" path="res://cs/UkPath.cs" id="4_wij6f"]
+[ext_resource type="Script" uid="uid://d27saoc78nxu5" path="res://cs/BaseZip.cs" id="4_y0p7p"]
+[ext_resource type="Texture2D" uid="uid://c0k6ceyh264fk" path="res://assets/white.png" id="5_3ls4m"]
+[ext_resource type="Script" uid="uid://cn1rauoq1sfbg" path="res://cs/Acf.cs" id="5_lg015"]
+[ext_resource type="Script" uid="uid://bg1y5nth3cfo4" path="res://cs/LaunchCommand.cs" id="6_4ndjb"]
 [ext_resource type="FontFile" uid="uid://jsnp4a1vnwe6" path="res://fonts/windows-xp-tahoma.ttf" id="8_dwrpx"]
-[ext_resource type="Texture2D" uid="uid://d3556cxb385mm" path="res://button-red-dark.png" id="8_iqepy"]
-[ext_resource type="Script" uid="uid://45py52d4rdt2" path="res://Description.cs" id="9_g7jxm"]
-[ext_resource type="Texture2D" uid="uid://dlv6pr1l811fg" path="res://button-red-bright.png" id="9_h1wq0"]
-[ext_resource type="Texture2D" uid="uid://ctnrnsxagwa30" path="res://button-red.png" id="10_dwrpx"]
-[ext_resource type="Script" uid="uid://bwjibpo8q0iuf" path="res://API.cs" id="11_3ls4m"]
-[ext_resource type="Script" uid="uid://bfb02t8sx6we" path="res://Wayland.cs" id="12_5h80m"]
-[ext_resource type="Texture2D" uid="uid://5566bweijk4x" path="res://smile-left.png" id="13_oxnod"]
-[ext_resource type="Script" uid="uid://c1dfydiintqhl" path="res://MangoHud.cs" id="13_w25hu"]
-[ext_resource type="Texture2D" uid="uid://nt1r2d2kdmo" path="res://smile-middle.png" id="14_gd0jp"]
-[ext_resource type="Texture2D" uid="uid://d3kufamybw8l8" path="res://smile-right.png" id="15_4ndjb"]
+[ext_resource type="Texture2D" uid="uid://d3556cxb385mm" path="res://assets/button-red-dark.png" id="8_iqepy"]
+[ext_resource type="Script" uid="uid://45py52d4rdt2" path="res://cs/Description.cs" id="9_g7jxm"]
+[ext_resource type="Texture2D" uid="uid://dlv6pr1l811fg" path="res://assets/button-red-bright.png" id="9_h1wq0"]
+[ext_resource type="Texture2D" uid="uid://ctnrnsxagwa30" path="res://assets/button-red.png" id="10_dwrpx"]
+[ext_resource type="Script" uid="uid://bwjibpo8q0iuf" path="res://cs/API.cs" id="11_3ls4m"]
+[ext_resource type="Script" uid="uid://bfb02t8sx6we" path="res://cs/Wayland.cs" id="12_5h80m"]
+[ext_resource type="Texture2D" uid="uid://5566bweijk4x" path="res://assets/smile-left.png" id="13_oxnod"]
+[ext_resource type="Script" uid="uid://c1dfydiintqhl" path="res://cs/MangoHud.cs" id="13_w25hu"]
+[ext_resource type="Texture2D" uid="uid://nt1r2d2kdmo" path="res://assets/smile-middle.png" id="14_gd0jp"]
+[ext_resource type="Texture2D" uid="uid://d3kufamybw8l8" path="res://assets/smile-right.png" id="15_4ndjb"]
+[ext_resource type="Script" uid="uid://b3joi2ngxcixb" path="res://gd/accept_dialog.gd" id="21_td6mg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ecwwl"]
 bg_color = Color(0.0997504, 0.0997504, 0.0997503, 1)
@@ -76,6 +77,7 @@ offset_top = 128.0
 offset_right = 512.0
 offset_bottom = 315.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ecwwl")
+text = "Move the mouse cursor over a button to see a description."
 script = ExtResource("2_gd0jp")
 
 [node name="Buttons" type="Node" parent="."]
@@ -334,6 +336,15 @@ text = "A SmileOS 2.0 compatibility layer for UNIX-like operating systems."
 horizontal_alignment = 1
 script = ExtResource("9_g7jxm")
 
+[node name="Button" type="Button" parent="Title"]
+layout_mode = 0
+offset_left = 169.0
+offset_top = 6.0
+offset_right = 190.0
+offset_bottom = 27.0
+theme = ExtResource("4_ecwwl")
+text = "?"
+
 [node name="Window" type="Node" parent="."]
 
 [node name="Left" type="Sprite2D" parent="Window"]
@@ -350,6 +361,28 @@ texture = ExtResource("14_gd0jp")
 position = Vector2(745.25, 8)
 scale = Vector2(1.05814, 1)
 texture = ExtResource("15_4ndjb")
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+title = "Help"
+initial_position = 1
+size = Vector2i(671, 284)
+dialog_text = "FROWN is a tool for running ULTRAKILL on other Operating Systems, such as macOS and Linux.
+
+To use it, you first need to download ULTRAKILL through Steam. If you're on macOS, you can use the \"Create ACF\" button.
+
+Then you can install a compatibility zip, which consists of a dummy UnityPlayer for your platform, as well as a Managed directory.
+
+It only works on Linux and Intel macOS at this time, due to Metal shaders not being compiled for the game, and globalgamemanagers
+
+would need to be edited to allow launching with the Metal backend for Apple Silicon/ARM.
+
+This is not, and should not be treated as an official port of ULTRAKILL. Do not use this in speedruns, or try to pass it off as unmodified.
+
+(c) coatlessali, 2025
+coatlessali@protonmail.com
+ULTRAKILL is owned by Arsi \"Hakita\" Patala. Top border assets are recreated from the game, and are used without permission.
+Discord Game SDK and Steamworks SDK redistributable are owned by Discord and Valve respectively."
+script = ExtResource("21_td6mg")
 
 [connection signal="mouse_entered" from="Buttons/UkPathButton" to="ButtonDesc" method="_on_uk_path_button_mouse_entered"]
 [connection signal="pressed" from="Buttons/UkPathButton" to="ukPath" method="_on_uk_path_button_pressed"]
@@ -371,3 +404,4 @@ texture = ExtResource("15_4ndjb")
 [connection signal="mouse_entered" from="Switches/MangoHud" to="ButtonDesc" method="_on_check_button_mouse_entered"]
 [connection signal="dir_selected" from="ukPath" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="file_selected" from="baseZip" to="." method="_on_base_zip_file_selected"]
+[connection signal="pressed" from="Title/Button" to="AcceptDialog" method="_on_button_pressed"]

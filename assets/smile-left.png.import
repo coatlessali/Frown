@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d051br5j3qq8"
-path="res://.godot/imported/button-bright.png-db40482924c75bb1a7098c56369b5ed8.ctex"
+uid="uid://5566bweijk4x"
+path="res://.godot/imported/smile-left.png-86eeb2dc1fddf26a11859a9730d22db1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://button-bright.png"
-dest_files=["res://.godot/imported/button-bright.png-db40482924c75bb1a7098c56369b5ed8.ctex"]
+source_file="res://assets/smile-left.png"
+dest_files=["res://.godot/imported/smile-left.png-86eeb2dc1fddf26a11859a9730d22db1.ctex"]
 
 [params]
 

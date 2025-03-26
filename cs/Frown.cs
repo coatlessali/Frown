@@ -8,6 +8,8 @@ using IniParser.Model;
 
 public partial class Frown : Node2D
 {
+	string frownVer = "2025.03.25-TESTING";
+	
 	// Labels
 	[Export]
 	public RichTextLabel _progress;
