@@ -192,6 +192,7 @@ public partial class Frown : Node2D
 
 	private void Install(string baseZip)
 	{
+		Backup();
 		string verStr = "Unknown";
 		using (ZipArchive zip = ZipFile.Open(baseZip, ZipArchiveMode.Read)){
 			foreach (ZipArchiveEntry entry in zip.Entries){
