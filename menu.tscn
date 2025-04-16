@@ -40,7 +40,7 @@ texture = ExtResource("8_iqepy")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gd0jp"]
 texture = ExtResource("10_dwrpx")
 
-[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_command", "_launch", "_save", "_mods", "_api", "_wayland", "_mangohud", "_ukPath", "_baseZip")]
+[node name="Frown" type="Node2D" node_paths=PackedStringArray("_progress", "_install", "_uninstall", "_command", "_launch", "_save", "_deleteBackup", "_mods", "_api", "_wayland", "_mangohud", "_ukPath", "_baseZip")]
 script = ExtResource("1_o15y0")
 _progress = NodePath("Progress")
 _install = NodePath("Buttons/Install")
@@ -48,6 +48,7 @@ _uninstall = NodePath("Buttons/Uninstall")
 _command = NodePath("Buttons/LaunchCommand")
 _launch = NodePath("Buttons/Launch")
 _save = NodePath("Buttons/Save")
+_deleteBackup = NodePath("Buttons/DeleteBackup")
 _mods = NodePath("Switches/Mods")
 _api = NodePath("Switches/API")
 _wayland = NodePath("Switches/Wayland")
@@ -124,11 +125,27 @@ theme_override_font_sizes/font_size = 16
 text = "Uninstall..."
 metadata/_edit_group_ = true
 
+[node name="DeleteBackup" type="Button" parent="Buttons"]
+offset_left = 514.0
+offset_top = 192.0
+offset_right = 640.0
+offset_bottom = 220.0
+theme = ExtResource("4_ecwwl")
+theme_override_font_sizes/font_size = 16
+text = "Delete Backup..."
+metadata/_edit_group_ = true
+
+[node name="Border" type="Sprite2D" parent="Buttons/DeleteBackup"]
+z_index = -1
+position = Vector2(63, 14)
+scale = Vector2(128, 30)
+texture = ExtResource("5_3ls4m")
+
 [node name="LaunchCommand" type="Button" parent="Buttons"]
 offset_left = 514.0
-offset_top = 223.0
+offset_top = 224.0
 offset_right = 640.0
-offset_bottom = 251.0
+offset_bottom = 252.0
 theme = ExtResource("4_ecwwl")
 theme_override_font_sizes/font_size = 16
 text = "Copy Command..."
@@ -212,14 +229,6 @@ z_index = -1
 position = Vector2(63, 13.5)
 scale = Vector2(128, 29)
 texture = ExtResource("5_3ls4m")
-
-[node name="Label" type="Label" parent="Buttons"]
-offset_left = 513.0
-offset_top = 190.0
-offset_right = 684.0
-offset_bottom = 221.0
-text = "i'm gonna put an install mods and open mods folder button here later"
-autowrap_mode = 2
 
 [node name="Switches" type="Node" parent="."]
 
@@ -348,25 +357,30 @@ text = "?"
 [node name="Window" type="Node" parent="."]
 
 [node name="Left" type="Sprite2D" parent="Window"]
+visible = false
 position = Vector2(7.87499, 8)
 scale = Vector2(1.05, 1)
 texture = ExtResource("13_oxnod")
 
 [node name="Middle" type="Sprite2D" parent="Window"]
+visible = false
 position = Vector2(371.625, 8)
 scale = Vector2(47.5167, 1)
 texture = ExtResource("14_gd0jp")
 
 [node name="Right" type="Sprite2D" parent="Window"]
+visible = false
 position = Vector2(745.25, 8)
 scale = Vector2(1.05814, 1)
 texture = ExtResource("15_4ndjb")
 
 [node name="AcceptDialog" type="AcceptDialog" parent="."]
 title = "Help"
-initial_position = 1
-size = Vector2i(671, 284)
+initial_position = 2
+size = Vector2i(669, 364)
 dialog_text = "FROWN is a tool for running ULTRAKILL on other Operating Systems, such as macOS and Linux.
+
+It works by adding/replacing the necessary dummy Unity components (Player, Plugins, netstandard DLLs, etc) for the game to run.
 
 To use it, you first need to download ULTRAKILL through Steam. If you're on macOS, you can use the \"Create ACF\" button.
 
@@ -378,6 +392,8 @@ would need to be edited to allow launching with the Metal backend for Apple Sili
 
 This is not, and should not be treated as an official port of ULTRAKILL. Do not use this in speedruns, or try to pass it off as unmodified.
 
+This is a novelty project that is only meant to help enable playing the game in some unexpected places - such as very low end hardware.
+
 (c) coatlessali, 2025
 coatlessali@protonmail.com
 ULTRAKILL is owned by Arsi \"Hakita\" Patala. Top border assets are recreated from the game, and are used without permission.
@@ -388,6 +404,8 @@ script = ExtResource("21_td6mg")
 [connection signal="pressed" from="Buttons/UkPathButton" to="ukPath" method="_on_uk_path_button_pressed"]
 [connection signal="mouse_entered" from="Buttons/Install" to="ButtonDesc" method="_on_install_mouse_entered"]
 [connection signal="mouse_entered" from="Buttons/Uninstall" to="ButtonDesc" method="_on_uninstall_mouse_entered"]
+[connection signal="mouse_entered" from="Buttons/DeleteBackup" to="ButtonDesc" method="_on_delete_backup_mouse_entered"]
+[connection signal="pressed" from="Buttons/DeleteBackup" to="." method="_on_launch_command_pressed"]
 [connection signal="mouse_entered" from="Buttons/LaunchCommand" to="ButtonDesc" method="_on_launch_command_mouse_entered"]
 [connection signal="pressed" from="Buttons/LaunchCommand" to="." method="_on_launch_command_pressed"]
 [connection signal="mouse_entered" from="Buttons/ACF" to="ButtonDesc" method="_on_acf_mouse_entered"]

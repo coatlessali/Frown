@@ -8,7 +8,7 @@ using IniParser.Model;
 
 public partial class Frown : Node2D
 {
-	string frownVer = "2025.03.25-TESTING";
+	string frownVer = "2025.04.15-TESTING";
 	
 	// Labels
 	[Export]
@@ -24,6 +24,8 @@ public partial class Frown : Node2D
 	public Button _launch;
 	[Export]
 	public Button _save;
+	[Export]
+	public Button _deleteBackup;
 	// Switches
 	[Export]
 	public CheckButton _mods;
@@ -92,7 +94,18 @@ public partial class Frown : Node2D
 	
 	private void DeleteBackup()
 	{
-		_progress.Text += "[W] Not yet implemented.\n";
+		if (!Directory.Exists(backup)){
+			_progress.Text += "[W] No backup found.\n";
+			return;
+		}
+		try{
+			Directory.Delete(backup, true);
+			_progress.Text += "[I] Deleted backup.\n";
+		}
+		catch (Exception e){
+			GD.Print(e.ToString());
+			_progress.Text += "[E] Failed to delete backup.\n";
+		}
 	}
 	
 	private void Restore()
@@ -156,18 +169,24 @@ public partial class Frown : Node2D
 	public override void _Ready()
 	{
 		
+		_progress.Text += $"[I] Version {frownVer}\n";
+		
 		_baseZip.FileSelected += Install;
 		_uninstall.Pressed += Restore;
 		_ukPath.DirSelected += GetUKPath;
 		_command.Pressed += Command;
 		_launch.Pressed += Launch;
 		_save.Pressed += SaveSettings;
+		_deleteBackup.Pressed += DeleteBackup;
 		
 		if(!File.Exists(frownConfig)){
 			string defaultConfig = "[main]\nfrown = false\nukPath = .\nwayland = false\nbepinex = false\nrenderer = 0\nmangohud = false";
 			File.WriteAllText(frownConfig, defaultConfig);
 			_progress.Text += "[I] Created frown.ini\n";
-			_ukPath.Show();
+			// _ukPath.Show();
+			if (OS.GetName() == "macOS")
+				_progress.Text += "[I] Please click \"Create ACF\" to force Steam to download ULTRAKILL.";
+			_progress.Text += "[I] Once you have ULTRAKILL, please click\"Select Path\" before continuing.";
 		}
 		
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
@@ -217,6 +236,7 @@ public partial class Frown : Node2D
 			GD.Print("versions do not match!");
 			_progress.Text += "[W] Versions do not match!\n";
 			_progress.Text += "[W] " + verStr + " != " + ukVersion + "\n";
+			_progress.Text += "[W] This is probably fine, Unity version detection is finnicky.";
 			GD.Print("verStr " + verStr);
 			GD.Print(verStr.Length);
 			GD.Print("ukVersion " + ukVersion);

@@ -43,3 +43,7 @@ func _on_log_mouse_entered() -> void:
 
 func _on_save_mouse_entered() -> void:
 	text = "Save settings to frown.ini."
+
+
+func _on_delete_backup_mouse_entered() -> void:
+	text = "Delete backup. (For updates and whatnot.)"
