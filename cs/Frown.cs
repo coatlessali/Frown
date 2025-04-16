@@ -77,18 +77,27 @@ public partial class Frown : Node2D
 		_progress.Text += $"[I] ULTRAKILL Version: {ukVersion}\n";
 	}
 	
-	private void Backup()
+	private bool Backup()
 	{
 		string Managed = Path.Combine(ukPath, "ULTRAKILL_Data", "Managed");
 		if (Directory.Exists(backup))
 		{
 			_progress.Text += "[I] Skipped backup creation.\n";
-			return;
+			return true;
 		}
 		Directory.CreateDirectory(backup);
 		_progress.Text += "[I] Created backup directory.\n";
-		CopyFilesRecursively(Managed, backup);
-		_progress.Text += "[I] Created backup.\n";
+		try{
+			CopyFilesRecursively(Managed, backup);
+			_progress.Text += "[I] Created backup.\n";
+			return true;
+		}
+		catch(Exception e){
+			GD.Print(e.ToString());
+			_progress.Text += "[E] Failed to create backup. You likely forgot to select your ULTRAKILL directory.\n";
+			return false;
+		}
+		
 	}
 	
 	
@@ -185,8 +194,8 @@ public partial class Frown : Node2D
 			_progress.Text += "[I] Created frown.ini\n";
 			// _ukPath.Show();
 			if (OS.GetName() == "macOS")
-				_progress.Text += "[I] Please click \"Create ACF\" to force Steam to download ULTRAKILL.";
-			_progress.Text += "[I] Once you have ULTRAKILL, please click\"Select Path\" before continuing.";
+				_progress.Text += "[I] Please click \"Create ACF\" to force Steam to download ULTRAKILL.\n";
+			_progress.Text += "[I] Once you have ULTRAKILL, please click\"Select Path\" before continuing.\n";
 		}
 		
 		IniData data = new FileIniDataParser().ReadFile(frownConfig);
@@ -211,7 +220,8 @@ public partial class Frown : Node2D
 
 	private void Install(string baseZip)
 	{
-		Backup();
+		if (!Backup())
+			return;
 		string verStr = "Unknown";
 		using (ZipArchive zip = ZipFile.Open(baseZip, ZipArchiveMode.Read)){
 			foreach (ZipArchiveEntry entry in zip.Entries){
@@ -236,7 +246,7 @@ public partial class Frown : Node2D
 			GD.Print("versions do not match!");
 			_progress.Text += "[W] Versions do not match!\n";
 			_progress.Text += "[W] " + verStr + " != " + ukVersion + "\n";
-			_progress.Text += "[W] This is probably fine, Unity version detection is finnicky.";
+			_progress.Text += "[W] This is probably fine, Unity version detection is finnicky.\n";
 			GD.Print("verStr " + verStr);
 			GD.Print(verStr.Length);
 			GD.Print("ukVersion " + ukVersion);
