@@ -57,7 +57,7 @@ Here's a table.
 | tvOS       | No     | No      | Don't have test hardware + needs Metal support.                           |
 | Switch     | ?      | Maybe   | Would depend on me either having a license or a game of the same version. |
 | Xbox One   | ?      | Maybe   | Would need hardware to test with and an Xbox developer license.           |
-| Xbox X|S   | ?      | Maybe   | See above.                                                                |
+| Xbox X/S   | ?      | Maybe   | See above.                                                                |
 | FreeBSD    | ?      | Maybe   | Might work with the Linux compatibility stuff it has.                     |
 | Other      | ?      | No      | Lack of interest.                                                         |
 
