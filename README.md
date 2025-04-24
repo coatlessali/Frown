@@ -9,6 +9,7 @@ On Linux:
 - Overwrites your netstandard2.1 DLLs
 - Drops a dummy UnityPlayer.so and executable into your game folder
 - Provides plugins for Discord and Steam
+
 On macOS:
 - Creates a dummy ULTRAKILL.app
 - Copies and symlinks files into it
